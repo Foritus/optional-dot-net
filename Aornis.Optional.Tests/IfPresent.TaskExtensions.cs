@@ -34,7 +34,7 @@ namespace Aornis.Tests
         }
 
         [Fact]
-        public async Task IfOrElse()
+        public async Task IfPresentOrElseAsync()
         {
             int result = await Task.Run(async () =>
             {
@@ -47,6 +47,19 @@ namespace Aornis.Tests
         }
         
         #region Sync
+        
+        [Fact]
+        public async Task IfPresentOrElseSync()
+        {
+            int result = await Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                return Optional<int>.Empty;
+            }).IfPresentAsync(_ => throw new Exception("Should not be called"))
+              .OrElseAsync(() => 987);
+
+            result.Should().Be(987);
+        }
 
         [Fact]
         public async Task ReceivesValueCreatedByFunc()

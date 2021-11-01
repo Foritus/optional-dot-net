@@ -90,6 +90,22 @@ namespace Aornis
         /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
         public static async Task<Optional<TResult>> IfPresentAsync<TResult>(
             this Task<Optional<TResult>> task,
+            Action<TResult> callback
+        )
+        {
+            var result = await task;
+            return result.IfPresent(callback);
+        }
+        
+        /// <summary>
+        /// Awaits the given source Task and executes the given callback function if the previous task returned a value
+        /// </summary>
+        /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
+        /// <param name="task">The task to await</param>
+        /// <param name="callback">The function to call if the given task's returned value is not Optional.Empty</param>
+        /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
+        public static async Task<Optional<TResult>> IfPresentAsync<TResult>(
+            this Task<Optional<TResult>> task,
             Func<TResult, Task> callback
         )
         {
@@ -115,7 +131,6 @@ namespace Aornis
         /// </summary>
         /// <remarks>This overload is specialised to the Task (non-generic) case, to avoid async void behavioural weirdness</remarks>
         /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
-        /// <typeparam name="TNewValue">The type that the result of the task will be mapped to</typeparam>
         /// <param name="task">The task to await</param>
         /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
         /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
