@@ -32,6 +32,19 @@ namespace Aornis.Tests
 
             result.Should().Be(246);
         }
+
+        [Fact]
+        public async Task IfOrElse()
+        {
+            int result = await Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                return Optional<int>.Empty;
+            }).IfPresentAsync(async x => throw new Exception("Should not be called"))
+              .OrElseAsync(() => 456);
+
+            result.Should().Be(456);
+        }
         
         #region Sync
 
