@@ -4,47 +4,46 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace Aornis.Tests
+namespace Aornis.Tests;
+
+public class Pack
 {
-    public class Pack
+    [Fact]
+    public void NoArgsReturnsEmptyList()
     {
-        [Fact]
-        public void NoArgsReturnsEmptyList()
-        {
-            Optional.Pack<string>().Should().BeEmpty();
-        }
+        Optional.Pack<string>().Should().BeEmpty();
+    }
 
-        [Fact]
-        public void SingleArgReturnsSingletonList()
+    [Fact]
+    public void SingleArgReturnsSingletonList()
+    {
+        Optional.Pack("test").Should().BeEquivalentTo(new List<Optional<string>>
         {
-            Optional.Pack("test").Should().BeEquivalentTo(new List<Optional<string>>
-            {
-                "test"
-            });
-        }
+            "test"
+        });
+    }
 
-        [Fact]
-        public void NullArrayReturnsEmptyList()
-        {
-            Optional.Pack<string>(null).Should().BeEmpty();
-        }
+    [Fact]
+    public void NullArrayReturnsEmptyList()
+    {
+        Optional.Pack<string>(null).Should().BeEmpty();
+    }
 
-        [Fact]
-        public void NullStringReturnsListWithEmptyOptional()
+    [Fact]
+    public void NullStringReturnsListWithEmptyOptional()
+    {
+        Optional.Pack((string)null).Should().BeEquivalentTo(new List<Optional<string>>
         {
-            Optional.Pack((string)null).Should().BeEquivalentTo(new List<Optional<string>>
-            {
-                Optional.Empty
-            });
-        }
+            Optional.Empty
+        });
+    }
 
-        [Fact]
-        public void PackCollectsAllValues()
+    [Fact]
+    public void PackCollectsAllValues()
+    {
+        Optional.Pack(1, 2, 3, 4, 5, 6).Should().BeEquivalentTo(new List<Optional<int>>
         {
-            Optional.Pack(1, 2, 3, 4, 5, 6).Should().BeEquivalentTo(new List<Optional<int>>
-            {
-                1, 2, 3, 4, 5, 6
-            });
-        }
+            1, 2, 3, 4, 5, 6
+        });
     }
 }

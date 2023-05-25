@@ -2,60 +2,59 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Aornis.Tests
+namespace Aornis.Tests;
+
+public class ImplicitConversion
 {
-    public class ImplicitConversion
+    [Fact]
+    public void ConvertsNullReferenceTypeToEmpty()
     {
-        [Fact]
-        public void ConvertsNullReferenceTypeToEmpty()
-        {
-            Optional<string> result = (string)null;
+        Optional<string> result = (string)null;
 
-            result.Should().Be(Optional<string>.Empty);
-        }
+        result.Should().Be(Optional<string>.Empty);
+    }
 
-        [Fact]
-        public void ConvertsStringToNonEmptyOptional()
-        {
-            Optional<string> result = "hello";
+    [Fact]
+    public void ConvertsStringToNonEmptyOptional()
+    {
+        Optional<string> result = "hello";
 
-            result.HasValue.Should().BeTrue();
-            result.Value.Should().Be("hello");
-        }
+        result.HasValue.Should().BeTrue();
+        result.Value.Should().Be("hello");
+    }
 
-        [Fact]
-        public void ConvertsEmptyStructToNonEmptyOptional()
-        {
-            Optional<StructWithFields> result = new StructWithFields();
+    [Fact]
+    public void ConvertsEmptyStructToNonEmptyOptional()
+    {
+        Optional<StructWithFields> result = new StructWithFields();
 
-            result.HasValue.Should().BeTrue();
-        }
+        result.HasValue.Should().BeTrue();
+    }
 
-        [Fact]
-        public void ConvertsIntegerToNonEmptyOptional()
-        {
-            Optional<int> result = 22;
+    [Fact]
+    public void ConvertsIntegerToNonEmptyOptional()
+    {
+        Optional<int> result = 22;
 
-            result.HasValue.Should().BeTrue();
-            result.Value.Should().Be(22);
-        }
+        result.HasValue.Should().BeTrue();
+        result.Value.Should().Be(22);
+    }
 
-        [Fact]
-        public void ConvertsZeroToNonEmptyOptional()
-        {
-            Optional<int> result = 0;
+    [Fact]
+    public void ConvertsZeroToNonEmptyOptional()
+    {
+        Optional<int> result = 0;
 
-            result.HasValue.Should().BeTrue();
-            result.Value.Should().Be(0);
-        }
+        result.HasValue.Should().BeTrue();
+        result.Value.Should().Be(0);
+    }
 
-        [Fact]
-        public void ConvertsZeroFloatToNonEmptyOptional()
-        {
-            Optional<float> result = 0f;
+    [Fact]
+    public void ConvertsZeroFloatToNonEmptyOptional()
+    {
+        Optional<float> result = 0f;
 
-            result.HasValue.Should().BeTrue();
-            result.Value.Should().Be(0f);
-        }
+        result.HasValue.Should().BeTrue();
+        result.Value.Should().Be(0f);
     }
 }

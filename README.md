@@ -5,6 +5,11 @@ A simple .net Optional type designed for productivity.
 
 https://www.nuget.org/packages/Optional.net/
 
+# New in 3.4
+* .net 7 build added!
+* Full nullable type annotations for the API
+* New overloads for All(), Any() and Get() for easier unpacking of values
+* Fixed a bug in UnpackPartial when using arrays
 # New in 3.3
 * .net 6 build added!
 * Added Task<T> variants of .OrElseAsync for nicer fallback chaining, e.g.
