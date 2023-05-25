@@ -332,7 +332,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
     /// <summary>
     /// Converts the given TValue into an Optional(TValue)
     /// </summary>
-    public static implicit operator Optional<TValue>(TValue value)
+    public static implicit operator Optional<TValue>(TValue? value)
     {
         return Optional.Of(value);
     }
@@ -340,8 +340,8 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
     /// <summary>
     /// Implicit operator to convert Optional.Empty into Optional(TValue).Empty
     /// </summary>
-    /// <param name="value">The non-generic Optional to convert</param>
-    public static implicit operator Optional<TValue>(Optional value)
+    /// <param name="_">Ignored</param>
+    public static implicit operator Optional<TValue>(Optional? _)
     {
         return Empty;
     }
