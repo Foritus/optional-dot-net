@@ -24,7 +24,7 @@ public class HashTests
     public void EqualValuesAreDeduplicated()
     {
         var set = new HashSet<Optional<int>>();
-        
+
         for (int i = 0; i < 100; ++i)
         {
             set.Add(Optional.Of(1));

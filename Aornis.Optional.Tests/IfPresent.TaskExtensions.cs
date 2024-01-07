@@ -45,9 +45,9 @@ public class IfPresentTaskExtensionsTest
 
         result.Should().Be(456);
     }
-        
+
     #region Sync
-        
+
     [Fact]
     public async Task IfPresentOrElseSync()
     {
@@ -80,29 +80,73 @@ public class IfPresentTaskExtensionsTest
     #region Async
 
     [Fact]
-    public async Task FlatMapAsyncReturnsValueCreatedByFunc()
+    public async Task IfPresentAsyncReturnsValueCreatedByFunc()
     {
         int result = 0;
         await Task.FromResult(baseValue).IfPresentAsync(async x =>
         {
             newValue.IfPresent(async y => result = x + y);
         });
-            
+
         result.Should().Be(baseValue.Value + newValue.Value);
     }
 
     [Fact]
-    public async Task FlatMapAsyncDoesNotCallFuncWhenValueIsEmpty()
+    public async Task IfPresentAsyncDoesNotCallFuncWhenValueIsEmpty()
     {
         await Optional<string>.Empty.IfPresentAsync(x => throw new Exception("This function should not be called"));
     }
 
     [Fact]
-    public async Task ReturnsTaskCreatedByAsyncCallback()
+    public async Task IfPresentAsyncObserveSideEffect()
     {
-        var result = await Task.FromResult(baseValue).FlatMapAsync(async x => await Task.FromResult(newValue));
-        result.Should().Be(newValue);
+        var x = 123;
+        await Task.FromResult(baseValue)
+                .IfPresentAsync(async _ => x = 456);
+        x.Should().Be(456);
     }
-        
+
+    [Fact]
+    public async Task IfNotPresentSynchronousCallback()
+    {
+        int result = 0;
+        await Task.FromResult(Optional<int>.Empty).IfNotPresentAsync(() =>
+        {
+            result = 159;
+        });
+
+        result.Should().Be(159);
+    }
+
+    [Fact]
+    public async Task IfNotPresentAsyncReturnsValueCreatedByFunc()
+    {
+        int result = 0;
+        await Task.FromResult(Optional<int>.Empty).IfNotPresentAsync(async () =>
+        {
+            result = 159;
+        });
+
+        result.Should().Be(159);
+    }
+
+    [Fact]
+    public async Task IfNotPresentAsyncDoesNotCallFuncWhenValueIsPresent()
+    {
+        await Task.FromResult((Optional<string>)"hello").IfNotPresentAsync(() => throw new Exception("This function should not be called"));
+    }
+
+    [Fact]
+    public async Task IfNotPresentAsyncObserveSideEffect()
+    {
+        var x = 123;
+        await Task.FromResult(Optional<string>.Empty)
+                .IfNotPresentAsync(async () =>
+                {
+                    x = 456;
+                });
+        x.Should().Be(456);
+    }
+
     #endregion
 }

@@ -51,10 +51,10 @@ public class TaskExtensionsTest
     public async Task OrElseAsyncChainingIsLazy()
     {
         int callbacksExecuted = 0;
-            
+
         var t = Task.Run<Optional<int>>(() => Optional.Empty);
 
-        var result = 
+        var result =
             await t.OrElseAsync(() =>
                 {
                     callbacksExecuted++;
@@ -75,7 +75,7 @@ public class TaskExtensionsTest
         result.Value.Should().Be(22);
         callbacksExecuted.Should().Be(2);
     }
-        
+
     [Fact]
     public async Task TaskOrElseImmediateValueDoesNotExecuteFuncIfValue()
     {
@@ -85,7 +85,7 @@ public class TaskExtensionsTest
 
         result.Should().Be(1);
     }
-        
+
     [Fact]
     public async Task TaskOrElseImmediateFuncDoesNotExecuteFuncIfValue()
     {
@@ -95,7 +95,7 @@ public class TaskExtensionsTest
 
         result.Should().Be(1);
     }
-        
+
     [Fact]
     public async Task TaskOrElseOptionalDoesNotExecuteFuncIfValue()
     {

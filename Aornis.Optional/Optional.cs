@@ -51,7 +51,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
         _value = value;
         HasValue = !Optional.IsDefault(ref value);
     }
-        
+
     /// <summary>
     /// Internal workaround for the fact that value types don't play nicely with IsDefault. i.e. if I create an Optional(int) with value 0, this is technically the same as
     /// Optional(int).Empty as default(int) is 0. Doh. So instead allow some manual wiring when creating Optional(int).Empty so explicitly state "hey this is empty"
@@ -249,7 +249,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
             // Boilerplate required to make the compiler happy
             return Value;
         }
-            
+
         return Value;
     }
 
@@ -358,7 +358,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
         {
             return Empty;
         }
-            
+
         return Optional.Of(fsOption.Value);
     }
 
@@ -407,7 +407,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
         {
             hashCode = hashCode * hashPrime + EqualityComparer<TValue>.Default.GetHashCode(_value!);
         }
-        
+
         unchecked
         {
             hashCode = hashCode * hashPrime + HasValue.GetHashCode();
@@ -442,7 +442,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
     /// <param name="rhs">Right hand Optional to check</param>
     /// <returns>true if both optional values are equal or both are Optional.Empty, otherwise false</returns>
     public static bool operator ==(Optional<TValue> lhs, Optional<TValue> rhs) => lhs.Equals(rhs);
-        
+
     /// <summary>
     /// Determines if the given instances are not equal to each other. If both optionals have a value,
     /// the default equality comparator for the given types will be called to determine if they are not equal.
@@ -460,7 +460,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
     /// <param name="rhs">The non-generic Optional to check</param>
     /// <returns>true if they are both empty, otherwise false</returns>
     public static bool operator ==(Optional<TValue> lhs, Optional rhs) => !lhs.HasValue;
-        
+
     /// <summary>
     /// Compares the given generic Optional against the non-generic Optional.Empty implementation.
     /// This will always return true if the non-generic operand has a value.
@@ -478,7 +478,7 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
     /// <param name="rhs">The generic Optional to check</param>
     /// <returns>true if they are both empty, otherwise false</returns>
     public static bool operator ==(Optional lhs, Optional<TValue> rhs) => !rhs.HasValue;
-        
+
     /// <summary>
     /// Compares the given generic Optional against the non-generic Optional.Empty implementation.
     /// This will always return true if the non-generic operand has a value.
