@@ -5,6 +5,11 @@ A simple .net Optional type designed for productivity.
 
 https://www.nuget.org/packages/Optional.net/
 
+# New 3.5
+* .net 8 build added!
+* Added IfNotPresentAsync Task extension method
+* Greater test coverage
+
 # New in 3.4
 * .net 7 build added!
 * Full nullable type annotations for the API
