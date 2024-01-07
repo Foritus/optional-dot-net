@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Richard Thorne</Authors>
+    <Authors>Charlotte Thorne</Authors>
     <Company>Aornis</Company>
     <Description>A productive Optional library for .NET</Description>
     <Summary>A productive Optional library for C# with F# interop</Summary>
-    <Copyright>Richard Thorne</Copyright>
+    <Copyright>Charlotte Thorne</Copyright>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/Foritus/optional-dot-net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Foritus/optional-dot-net.git</RepositoryUrl>
