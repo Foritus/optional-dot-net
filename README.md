@@ -26,21 +26,22 @@ void Main() {
 
 Implicitly converts values into Optionals
 ```
-	string SomeFunc() {
-		return "test";
-	}
+string SomeFunc() {
+    return "test";
+}
 
-    Optional<string> result = SomeFunc();
+Optional<string> result = SomeFunc();
+result.IfPresent(x => Console.WriteLine(x));
 ```
 
 Automatically converts nulls to Optional.Empty
 ```
-	string SomeFunc() {
-		return null;
-	}
+string SomeFunc() {
+	return null;
+}
 
-    Optional<string> foo = SomeFunc();
-	Console.WriteLine($"Result HasValue = {foo.HasValue}");
+Optional<string> foo = SomeFunc();
+Console.WriteLine($"Result HasValue = {foo.HasValue}");
 ```
 
 Chain through multiple optional functions until one returns
