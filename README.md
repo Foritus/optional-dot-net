@@ -5,6 +5,9 @@ A simple .net Optional type designed for productivity.
 
 https://www.nuget.org/packages/Optional.net/
 
+## New in 2.1.1:
+* Support for .net framework 4.6.1 and 4.7.2 alongside existing .net core support
+
 ## New in 2.1! .NET Core 3.0 build, readonly struct optimisations and F# interop
 
 I've added support for .NET Core 3.0 and I've made `Optional<T>` a `readonly struct` (It was never mutable anyway), which should give some small perf wins through reduced copies on member invocations.
