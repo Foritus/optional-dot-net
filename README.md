@@ -5,6 +5,19 @@ A simple .net Optional type designed for productivity.
 
 https://www.nuget.org/packages/Optional.net/
 
+# New in 2.2
+* Added extension methods on Task<Optional<T>> to make chaining optional async methods nicer
+
+```
+string result = await SomeAsyncFunc().OrElse(() => "hello!");
+
+Optional<T> result = await SomeAsyncFunc().OrElse(SomeOtherFunThatReturnsOptional);
+
+Optional<string> result = await Task.FromResult("Hello").MapAsync(x => x + " World!");
+
+Optional<string> result = await SomeAsyncFunc().MapAsync(async x => "Hello from an async Task {x}!");
+```
+
 ## New in 2.1.1:
 * Support for .net framework 4.6.1 and 4.7.2 alongside existing .net core support
 
@@ -110,10 +123,17 @@ Async friendly
 ```
 async Task Main()
 {
+    // Mix sync and async functions using Optionals
     await SomeFunc().IfPresentAsync(value =>
     {
         await DoAsyncWork(value);
         Console.WriteLine("Async!");
+    });
+
+    // Compose optional async tasks together!
+    Optional<char[]> _ = await SomeFunc().MapAsync(x =>
+    {
+        return x.ToArray();
     });
 }
 

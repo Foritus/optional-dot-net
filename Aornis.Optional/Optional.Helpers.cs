@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Aornis
 {
+    /// <summary>
+    /// Non-generic Optional type that is used to dynamically map between Optional(T) and Optional.Empty via implicit conversions
+    /// </summary>
     public class Optional
     {
         /// <summary>
@@ -28,7 +31,7 @@ namespace Aornis
                 return false;
             }
 
-            return EqualityComparer<TValue>.Default.Equals(value, default(TValue));
+            return EqualityComparer<TValue>.Default.Equals(value, default);
         }
 
         /// <summary>
@@ -206,6 +209,7 @@ namespace Aornis
             return result;
         }
 
+        /// <inheritdoc cref="Object.ToString"/>
         public override string ToString()
         {
             // The nongeneric version of Optional is always empty

@@ -6,6 +6,10 @@ using Microsoft.FSharp.Core;
 
 namespace Aornis
 {
+    /// <summary>
+    /// Represents a potential value of type TValue.
+    /// </summary>
+    /// <typeparam name="TValue">The type of value that may be contained within this instance</typeparam>
     public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>>
     {
         /// <summary>
@@ -200,56 +204,56 @@ namespace Aornis
         /// <summary>
         /// If this optional is empty, returns the value created by the given function. Otherwise returns the value contained inside this Optional.
         /// </summary>
-        /// <param name="fallback">Fallback value if this Optional is empty</param>
+        /// <param name="fallback">Fallback value generator if this Optional is empty</param>
         /// <returns>this.Value if this Optional is not empty, otherwise the given fallback value</returns>
-        public TValue OrElse(Func<TValue> func)
+        public TValue OrElse(Func<TValue> fallback)
         {
-            return HasValue ? this.Value : func();
+            return HasValue ? this.Value : fallback();
         }
 
         /// <summary>
         /// If this optional is empty, returns the value created by the given function. Otherwise returns the value contained inside this Optional.
         /// </summary>
-        /// <param name="fallback">Fallback value if this Optional is empty</param>
+        /// <param name="fallback">Fallback value generator if this Optional is empty</param>
         /// <returns>this.Value if this Optional is not empty, otherwise the given fallback value</returns>
-        public Optional<TValue> OrElse(Func<Optional<TValue>> func)
+        public Optional<TValue> OrElse(Func<Optional<TValue>> fallback)
         {
             if (HasValue)
             {
                 return this;
             }
 
-            return func();
+            return fallback();
         }
 
         /// <summary>
         /// If this optional is empty, returns the value created by the given function. Otherwise returns the value contained inside this Optional.
         /// </summary>
-        /// <param name="fallback">Fallback value if this Optional is empty</param>
+        /// <param name="fallback">Fallback value generator if this Optional is empty</param>
         /// <returns>this.Value if this Optional is not empty, otherwise the given fallback value</returns>
-        public async Task<Optional<TValue>> OrElseAsync(Func<Task<TValue>> func)
+        public async Task<Optional<TValue>> OrElseAsync(Func<Task<TValue>> fallback)
         {
             if (HasValue)
             {
                 return this;
             }
 
-            return Optional.Of(await func());
+            return Optional.Of(await fallback());
         }
 
         /// <summary>
         /// If this optional is empty, returns the value created by the given function. Otherwise returns the value contained inside this Optional.
         /// </summary>
-        /// <param name="fallback">Fallback value if this Optional is empty</param>
+        /// <param name="fallback">Fallback value generator if this Optional is empty</param>
         /// <returns>this.Value if this Optional is not empty, otherwise the given fallback value</returns>
-        public async Task<Optional<TValue>> OrElseAsync(Func<Task<Optional<TValue>>> func)
+        public async Task<Optional<TValue>> OrElseAsync(Func<Task<Optional<TValue>>> fallback)
         {
             if (HasValue)
             {
                 return this;
             }
 
-            return await func();
+            return await fallback();
         }
 
         /// <summary>
@@ -280,6 +284,11 @@ namespace Aornis
             return this;
         }
 
+        /// <summary>
+        /// Throws the exception created by the given function if this Optional is empty
+        /// </summary>
+        /// <param name="makeException">Generates an exception to be thrown</param>
+        /// <returns>This instance if it has a value, otherwise throws</returns>
         public async Task<Optional<TValue>> ThrowIfEmptyAsync(Func<Task<Exception>> makeException)
         {
             if (HasValue)
@@ -348,6 +357,7 @@ namespace Aornis
             return HasValue ? FSharpValueOption<TValue>.NewValueSome(Value) : FSharpValueOption<TValue>.ValueNone;
         }
 
+        /// <inheritdoc cref="Object.ToString" />
         public override string ToString()
         {
             if (HasValue)
@@ -362,6 +372,7 @@ namespace Aornis
 
         #region Equality Operators
 
+        /// <inheritdoc cref="Object.GetHashCode" />
         public override int GetHashCode()
         {
             const int HASH_PRIME = 486187739;
@@ -375,6 +386,7 @@ namespace Aornis
             return hashCode;
         }
 
+        /// <inheritdoc cref="object.Equals(object)" />
         public override bool Equals(object obj)
         {
             if (obj is Optional wrapped)
@@ -385,19 +397,65 @@ namespace Aornis
             return obj is Optional<TValue> && Equals((Optional<TValue>)obj);
         }
 
+        /// <inheritdoc cref="object.Equals(object)"/>
         public bool Equals(Optional<TValue> other)
         {
             return this.HasValue == other.HasValue &&
                    EqualityComparer<TValue>.Default.Equals(value, other.value);
         }
 
+        /// <summary>
+        /// Determines if the given instances are equal to each other. If both optionals have a value,
+        /// the default equality comparator for the given types will be called to determine if they are equal.
+        /// </summary>
+        /// <param name="lhs">Left hand Optional to check</param>
+        /// <param name="rhs">Right hand Optional to check</param>
+        /// <returns>true if both optional values are equal or both are Optional.Empty, otherwise false</returns>
         public static bool operator ==(Optional<TValue> lhs, Optional<TValue> rhs) => lhs.Equals(rhs);
+        
+        /// <summary>
+        /// Determines if the given instances are not equal to each other. If both optionals have a value,
+        /// the default equality comparator for the given types will be called to determine if they are not equal.
+        /// </summary>
+        /// <param name="lhs">Left hand Optional to check</param>
+        /// <param name="rhs">Right hand Optional to check</param>
+        /// <returns>false if both optional values are equal or both are Optional.Empty, otherwise true</returns>
         public static bool operator !=(Optional<TValue> lhs, Optional<TValue> rhs) => !(lhs == rhs);
 
+        /// <summary>
+        /// Compares the given generic Optional against the nongeneric Optional.Empty implementation.
+        /// This will always return false if the nongeneric operand has a value.
+        /// </summary>
+        /// <param name="lhs">The generic Optional to check</param>
+        /// <param name="rhs">The nongeneric Optional to check</param>
+        /// <returns>true if they are both empty, otherwise false</returns>
         public static bool operator ==(Optional<TValue> lhs, Optional rhs) => !lhs.HasValue;
+        
+        /// <summary>
+        /// Compares the given generic Optional against the nongeneric Optional.Empty implementation.
+        /// This will always return true if the nongeneric operand has a value.
+        /// </summary>
+        /// <param name="lhs">The generic Optional to check</param>
+        /// <param name="rhs">The nongeneric Optional to check</param>
+        /// <returns>false if they are both empty, otherwise true</returns>
         public static bool operator !=(Optional<TValue> lhs, Optional rhs) => !(lhs == rhs);
 
+        /// <summary>
+        /// Compares the given generic Optional against the nongeneric Optional.Empty implementation.
+        /// This will always return false if the nongeneric operand has a value.
+        /// </summary>
+        /// <param name="lhs">The nongeneric Optional to check</param>
+        /// <param name="rhs">The generic Optional to check</param>
+        /// <returns>true if they are both empty, otherwise false</returns>
         public static bool operator ==(Optional lhs, Optional<TValue> rhs) => !rhs.HasValue;
+        
+        /// <summary>
+        /// Compares the given generic Optional against the nongeneric Optional.Empty implementation.
+        /// This will always return true if the nongeneric operand has a value.
+        /// </summary>
+        /// <param name="lhs">The generic Optional to check</param>
+        /// <param name="rhs">The nongeneric Optional to check</param>
+        /// <returns>false if they are both empty, otherwise true</returns>
         public static bool operator !=(Optional lhs, Optional<TValue> rhs) => !(lhs == rhs);
 
         #endregion

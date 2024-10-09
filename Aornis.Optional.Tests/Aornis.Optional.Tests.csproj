@@ -8,7 +8,7 @@
 
     <LangVersion>latest</LangVersion>
 
-    <TargetFrameworks>net461;net472;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net461;net472;net48;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
