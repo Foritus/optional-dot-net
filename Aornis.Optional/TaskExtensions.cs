@@ -38,10 +38,24 @@ namespace Aornis
         /// <typeparam name="T">The type of value that is being stored in the Optional result of the task</typeparam>
         /// <param name="task">The task to await</param>
         /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
-        /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
+        /// <returns>The value returned by the task, or the value returned by callback if the initial task returned Optional.Empty</returns>
         public static async Task<Optional<T>> OrElseAsync<T>(this Task<Optional<T>> task, Func<Optional<T>> callback)
         {
             return (await task).OrElse(callback);
+        }
+
+        /// <summary>
+        /// Awaits the given Task and, if it returns Optional.Empty, executes the task returned by the given callback instead
+        /// </summary>
+        /// <typeparam name="T">The type of value that is being stored in the Optional result of the task</typeparam>
+        /// <param name="task">The task to await</param>
+        /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
+        /// <returns>The value returned by the task, or the value returned by task provided by the callback if the initial task returned Optional.Empty</returns>
+        public static async Task<Optional<T>> OrElseAsync<T>(this Task<Optional<T>> task, Func<Task<Optional<T>>> callback)
+        {
+            // Nest the awaits here as we need to evaluate the inner optional task, evaluate its result and then lazily execute the OrElseAsync
+            // if needed
+            return await (await task).OrElseAsync(callback);
         }
 
         /// <summary>
