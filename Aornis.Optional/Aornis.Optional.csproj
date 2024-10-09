@@ -15,6 +15,7 @@
     <PackageId>Optional.net</PackageId>
     <Product>Optional.net</Product>
     <Version>1.1.0</Version>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
 </Project>

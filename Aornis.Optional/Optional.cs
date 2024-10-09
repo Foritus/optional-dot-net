@@ -11,6 +11,11 @@ namespace Aornis
         /// </summary>
         public static readonly Optional<TValue> Empty = new Optional<TValue>(default(TValue));
 
+        public void ToList()
+        {
+            throw new NotImplementedException();
+        }
+
         private readonly TValue value;
 
         /// <summary>
@@ -42,7 +47,7 @@ namespace Aornis
         public Optional(TValue value) : this()
         {
             this.value = value;
-            HasValue = !Optional.IsDefault(value);
+            HasValue = !Optional.IsDefault(ref value);
         }
 
         /// <summary>
@@ -258,6 +263,18 @@ namespace Aornis
             return Empty;
         }
 
+        public override string ToString()
+        {
+            if (HasValue)
+            {
+                return $"Optional[{Value}]";
+            }
+            else
+            {
+                return "Optional[Empty]";
+            }
+        }
+
         #region Equality Operators
 
         public override int GetHashCode()
@@ -275,6 +292,11 @@ namespace Aornis
 
         public override bool Equals(object obj)
         {
+            if (obj is Optional wrapped)
+            {
+                return Equals((Optional<TValue>)wrapped);
+            }
+
             return obj is Optional<TValue> && Equals((Optional<TValue>)obj);
         }
 
