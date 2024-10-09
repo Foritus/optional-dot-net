@@ -88,13 +88,13 @@ namespace Aornis
         /// <param name="task">The task to await</param>
         /// <param name="callback">The function to call if the given task's returned value is not Optional.Empty</param>
         /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
-        public static async Task IfPresentAsync<TResult>(
+        public static async Task<Optional<TResult>> IfPresentAsync<TResult>(
             this Task<Optional<TResult>> task,
             Func<TResult, Task> callback
         )
         {
             var result = await task;
-            await result.IfPresentAsync(async value => await callback(value).ConfigureAwait(true));
+            return await result.IfPresentAsync(async value => await callback(value).ConfigureAwait(true));
         }
 
         /// <summary>
