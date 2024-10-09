@@ -137,7 +137,7 @@ public class Optional
     }
 
     /// <summary>
-    /// Wraps the given <typeparamref name="TValue"/> inside of an Optional. Returning Optional.Empty for values which are equivalent to the types default value. 
+    /// Wraps the given <typeparamref name="TValue"/> inside of an Optional. Returning Optional.Empty for values which are equivalent to the types default value.
     /// e.g. if given null, this will return Optional.Empty.
     /// </summary>
     /// <typeparam name="TValue">The type of value to wrap in an Optional</typeparam>
@@ -213,7 +213,7 @@ public class Optional
     }
 
     /// <summary>
-    /// Given some values, returns either a populated list of those values which are present, 
+    /// Given some values, returns either a populated list of those values which are present,
     /// otherwise it returns empty if NO values are present
     /// </summary>
     /// <typeparam name="T">The type of the individual elements</typeparam>
@@ -225,7 +225,7 @@ public class Optional
     }
 
     /// <summary>
-    /// Given an enumerable list of values, returns either a populated list of those values which are present, 
+    /// Given an enumerable list of values, returns either a populated list of those values which are present,
     /// otherwise it returns empty if NO values are present
     /// </summary>
     /// <typeparam name="T">The type of the individual elements</typeparam>

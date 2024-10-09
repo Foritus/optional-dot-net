@@ -15,7 +15,7 @@ public class Map
     }
 
     #region Sync
-        
+
     [Fact]
     public void MapFuncIsCalledWhenHasValue()
     {
@@ -29,7 +29,7 @@ public class Map
 
         wasCalled.Should().BeTrue();
     }
-        
+
     [Fact]
     public void MapFuncIsNotCalledWhenEmpty()
     {

@@ -19,7 +19,7 @@ public static class TaskExtensions
     {
         return (await task).OrElse(callback);
     }
-        
+
     /// <summary>
     /// Awaits the given Task and, if it returns Optional.Empty, returns elseValue instead
     /// </summary>
@@ -31,7 +31,7 @@ public static class TaskExtensions
     {
         return (await task).OrElse(elseValue);
     }
-        
+
     /// <summary>
     /// Awaits the given Task and, if it returns Optional.Empty, calls the given value factory function instead
     /// </summary>
@@ -73,7 +73,7 @@ public static class TaskExtensions
     {
         return task.ContinueWith(x => x.Result.FlatMap(callback));
     }
-        
+
     /// <summary>
     /// Awaits the given source Task and maps the resulting value using the given function
     /// </summary>
@@ -94,7 +94,7 @@ public static class TaskExtensions
             // Unwrap the Task<Task<Optional<T>>> into a Task<Optional<T>>
             .Unwrap();
     }
-        
+
     /// <summary>
     /// Awaits the given source Task and executes the given callback function if the previous task returned a value
     /// </summary>
@@ -110,7 +110,7 @@ public static class TaskExtensions
         var result = await task;
         return result.IfPresent(callback);
     }
-        
+
     /// <summary>
     /// Awaits the given source Task and executes the given callback function if the previous task returned a value
     /// </summary>
@@ -128,6 +128,38 @@ public static class TaskExtensions
     }
 
     /// <summary>
+    /// Awaits the given source Task and executes the given callback function if the previous task did not return a value
+    /// </summary>
+    /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
+    /// <param name="task">The task to await</param>
+    /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
+    /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
+    public static async Task<Optional<TResult>> IfNotPresentAsync<TResult>(
+        this Task<Optional<TResult>> task,
+        Action callback
+    )
+    {
+        var result = await task;
+        return result.IfNotPresent(callback);
+    }
+
+    /// <summary>
+    /// Awaits the given source Task and executes the given callback function if the previous task did not return a value
+    /// </summary>
+    /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
+    /// <param name="task">The task to await</param>
+    /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
+    /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
+    public static async Task<Optional<TResult>> IfNotPresentAsync<TResult>(
+        this Task<Optional<TResult>> task,
+        Func<Task> callback
+    )
+    {
+        var result = await task;
+        return await result.IfNotPresentAsync(async () => await callback().ConfigureAwait(true));
+    }
+
+    /// <summary>
     /// Awaits the given source Task and maps the resulting value using the given function
     /// </summary>
     /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
@@ -139,7 +171,7 @@ public static class TaskExtensions
     {
         return task.ContinueWith(x => x.Result.Map(callback));
     }
-        
+
     /// <summary>
     /// Awaits the given source Task and maps the resulting value using the given function
     /// </summary>
@@ -156,7 +188,7 @@ public static class TaskExtensions
         var result = await task;
         await result.IfPresentAsync(async value => await callback(value).ConfigureAwait(true));
     }
-        
+
     /// <summary>
     /// Awaits the given source Task and maps the resulting value using the given function
     /// </summary>

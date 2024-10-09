@@ -11,7 +11,7 @@ public class AggregateOperations
     private IEnumerable<Optional<int>> AllPresent =>
         Enumerable.Range(0, 10)
                   .Select(Optional.Of);
-    
+
     private IEnumerable<Optional<int>> PartialPresent =>
         Enumerable.Range(0, 10)
             .Select(x =>
@@ -22,11 +22,11 @@ public class AggregateOperations
                 }
                 return Optional.Of(x);
             });
-    
+
     private IEnumerable<Optional<int>> NonePresent =>
         Enumerable.Range(0, 10)
             .Select(_ => Optional<int>.Empty);
-    
+
     [Fact]
     public void AllValuesPresent()
     {
@@ -34,7 +34,7 @@ public class AggregateOperations
         Optional.All(AllPresent.Cast<IOptional>()).Should().BeTrue();
         Optional.All((IOptional)Optional.Of(1), Optional.Of(2)).Should().BeTrue();
     }
-    
+
     [Fact]
     public void AllValuesPartial()
     {
@@ -42,7 +42,7 @@ public class AggregateOperations
         Optional.All(PartialPresent.Cast<IOptional>()).Should().BeFalse();
         Optional.All((IOptional)Optional.Of(1), Optional<int>.Empty).Should().BeFalse();
     }
-    
+
     [Fact]
     public void AllValuesNone()
     {
@@ -50,7 +50,7 @@ public class AggregateOperations
         Optional.All(NonePresent.Cast<IOptional>()).Should().BeFalse();
         Optional.All(Optional<int>.Empty, Optional<int>.Empty).Should().BeFalse();
     }
-    
+
     [Fact]
     public void AnyValuesPresent()
     {
@@ -58,7 +58,7 @@ public class AggregateOperations
         Optional.Any(AllPresent.Cast<IOptional>()).Should().BeTrue();
         Optional.Any((IOptional)Optional.Of(1), Optional.Of(2)).Should().BeTrue();
     }
-    
+
     [Fact]
     public void AnyValuesPartial()
     {
@@ -66,7 +66,7 @@ public class AggregateOperations
         Optional.Any(PartialPresent.Cast<IOptional>()).Should().BeTrue();
         Optional.Any((IOptional)Optional.Of(1), Optional<int>.Empty).Should().BeTrue();
     }
-    
+
     [Fact]
     public void AnyValuesNone()
     {

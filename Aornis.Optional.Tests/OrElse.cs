@@ -24,7 +24,7 @@ public class OrElse : TestBase
         var expected = "metal gear?!";
         Optional<string>.Empty.OrElse(() => expected).Should().Be(expected);
     }
-        
+
     [Fact]
     public void OrElseCallsFuncWhenValueIsEmpty()
     {

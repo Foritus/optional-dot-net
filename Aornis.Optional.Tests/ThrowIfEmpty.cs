@@ -28,7 +28,7 @@ public class ThrowIfNone : TestBase
         })).Value;
         value.Should().Be(1);
     }
-        
+
     [Fact]
     public void ThrowsWhenNone_SyncFunc()
     {
@@ -49,7 +49,7 @@ public class ThrowIfNone : TestBase
         }).Value;
         value.Should().Be(1);
     }
-        
+
     [Fact]
     public void ThrowsWhenNone_Value()
     {

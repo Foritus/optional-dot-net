@@ -10,50 +10,50 @@ public class ImplicitConversionFSharp
     public void RoundTripReferenceThroughFSharpAndBack()
     {
         var initial = Optional.Of("nanomachines?!");
-            
+
         FSharpValueOption<string> intermediate = initial.ToFsOption();
         intermediate.IsValueSome.Should().BeTrue();
 
         Optional<string> result = intermediate;
         result.Should().Be(Optional.Of("nanomachines?!"));
     }
-        
+
     [Fact]
     public void RoundTripEmptyReferenceThroughFSharpAndBack()
     {
         var initial = Optional<string>.Empty;
-            
+
         FSharpValueOption<string> intermediate = initial.ToFsOption();
         intermediate.IsValueNone.Should().BeTrue();
 
         Optional<string> result = intermediate;
         result.Should().Be(Optional<string>.Empty);
     }
-        
+
     [Fact]
     public void RoundTripValueTypeThroughFSharpAndBack()
     {
         var initial = Optional.Of(1337.1337);
-            
+
         FSharpValueOption<double> intermediate = initial.ToFsOption();
         intermediate.IsValueSome.Should().BeTrue();
 
         Optional<double> result = intermediate;
         result.Should().Be(Optional.Of(1337.1337));
     }
-        
+
     [Fact]
     public void RoundTripEmptyValueTypeThroughFSharpAndBack()
     {
         var initial = Optional<int>.Empty;
-            
+
         FSharpValueOption<int> intermediate = initial.ToFsOption();
         intermediate.IsValueNone.Should().BeTrue();
 
         Optional<int> result = intermediate;
         result.Should().Be(Optional<int>.Empty);
     }
-        
+
     [Fact]
     public void ConvertsFSharpReferenceOption()
     {
@@ -63,7 +63,7 @@ public class ImplicitConversionFSharp
 
         result.Should().Be(Optional.Of("hello world"));
     }
-        
+
     [Fact]
     public void ConvertsFSharpEmptyReferenceOption()
     {

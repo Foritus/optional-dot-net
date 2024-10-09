@@ -32,7 +32,7 @@ public class FlatMapTaskExtensionTest
 
         result.Should().Be(246);
     }
-        
+
     #region Sync
 
     [Fact]
@@ -85,6 +85,6 @@ public class FlatMapTaskExtensionTest
         var result = await Task.FromResult(baseValue).FlatMapAsync(async x => await Task.FromResult(newValue));
         result.Should().Be(newValue);
     }
-        
+
     #endregion
 }
