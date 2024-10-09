@@ -5,6 +5,27 @@ A simple .net Optional type designed for productivity.
 
 https://www.nuget.org/packages/Optional.net/
 
+# New in 3.0
+
+* Added .FlatMapAsync() extensions to Task<T>
+* Added OrElseThrow() to rethrow an exception if the given `Optional` does not have a value. The original exception call stack is preserved.
+
+```
+// Chain async optional tasks together, the tasks only execute if the previous task returned a value
+Task<Optional<long>> input = Task.FromResult(Optional.Of(1234567890L));
+Optional<string> output = await input.FlatMapAsync(async x => x.ToString());
+
+// Rethrow exceptions in a clean manner via OrElseThrow()
+try
+{
+    SomethingThatMightThrow();
+}
+catch (Exception ex)
+{
+    SomeFallbackThingThatReturnsOptional().OrElseThrow(ex); // Original call stack of ex is preserved
+}
+```
+
 # New in 2.2
 * Added extension methods on Task<Optional<T>> to make chaining optional async methods nicer
 

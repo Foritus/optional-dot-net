@@ -15,9 +15,9 @@ namespace Aornis
         /// <summary>
         /// Represents the 'empty' value for an Optional(TValue) instance
         /// </summary>
-        public static readonly Optional<TValue> Empty = new Optional<TValue>(default(TValue), false);
+        public static readonly Optional<TValue> Empty = new Optional<TValue>(default, false);
 
-        private readonly TValue value;
+        private readonly TValue _value;
 
         /// <summary>
         /// Returns true if this Optional contains a value, otherwise false
@@ -36,7 +36,7 @@ namespace Aornis
                     throw new InvalidOperationException($"Unsafe call to {nameof(Value)}() when {nameof(HasValue)} is false");
                 }
 
-                return value;
+                return _value;
             }
         }
 
@@ -47,7 +47,7 @@ namespace Aornis
         /// <param name="value">The value to be stored in this optional type</param>
         public Optional(TValue value) : this()
         {
-            this.value = value;
+            _value = value;
             HasValue = !Optional.IsDefault(ref value);
         }
         
@@ -55,9 +55,9 @@ namespace Aornis
         /// Internal workaround for the fact that value types don't play nicely with IsDefault. i.e. if I create an Optional(int) with value 0, this is technically the same as
         /// Optional(int).Empty as default(int) is 0. Doh. So instead allow some manual wiring when creating Optional(int).Empty so explicitly state "hey this is empty"
         /// </summary>
-        internal Optional(TValue value, bool hasValue)
+        private Optional(TValue value, bool hasValue)
         {
-            this.value = value;
+            _value = value;
             HasValue = hasValue;
         }
 
@@ -75,7 +75,7 @@ namespace Aornis
                 return Optional.Empty;
             }
 
-            return mapper(value);
+            return mapper(_value);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Aornis
                 return Optional.Empty;
             }
 
-            return await mapper(value);
+            return await mapper(_value);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Aornis
                 return this;
             }
 
-            callback(value);
+            callback(_value);
             return this;
         }
 
@@ -123,7 +123,7 @@ namespace Aornis
                 return this;
             }
 
-            await callback(value);
+            await callback(_value);
             return this;
         }
 
@@ -172,7 +172,7 @@ namespace Aornis
                 return Optional.Empty;
             }
 
-            return Optional.Of(mapper(value));
+            return Optional.Of(mapper(_value));
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace Aornis
                 return Optional.Empty;
             }
 
-            return Optional.Of(await mapper(value));
+            return Optional.Of(await mapper(_value));
         }
 
         /// <summary>
@@ -227,18 +227,44 @@ namespace Aornis
         }
 
         /// <summary>
+        /// If this optional is empty, throws the given exception while preserving its original stack trace.
+        /// </summary>
+        /// <returns>this.Value if this Optional is not empty, otherwise throws</returns>
+        public TValue OrElseThrow(Exception exception)
+        {
+            return OrElseThrow(() => exception);
+        }
+
+        /// <summary>
+        /// If this optional is empty, calls the given function and throws the returned exception while preserving its original stack trace.
+        /// </summary>
+        /// <returns>this.Value if this Optional is not empty, otherwise throws</returns>
+        public TValue OrElseThrow(Func<Exception> makeException)
+        {
+            if (!HasValue)
+            {
+                Exception ex = makeException();
+                ExceptionDispatchInfo.Capture(ex).Throw();
+                // Boilerplate required to make the compiler happy
+                return Value;
+            }
+            
+            return Value;
+        }
+
+        /// <summary>
         /// If this optional is empty, returns the value created by the given function. Otherwise returns the value contained inside this Optional.
         /// </summary>
         /// <param name="fallback">Fallback value generator if this Optional is empty</param>
         /// <returns>this.Value if this Optional is not empty, otherwise the given fallback value</returns>
-        public async Task<Optional<TValue>> OrElseAsync(Func<Task<TValue>> fallback)
+        public async Task<TValue> OrElseAsync(Func<Task<TValue>> fallback)
         {
             if (HasValue)
             {
-                return this;
+                return Value;
             }
 
-            return Optional.Of(await fallback());
+            return await fallback();
         }
 
         /// <summary>
@@ -314,7 +340,7 @@ namespace Aornis
         /// <summary>
         /// Implicit operator to convert Optional.Empty into Optional(TValue).Empty
         /// </summary>
-        /// <param name="value">The nongeneric Optional to convert</param>
+        /// <param name="value">The non-generic Optional to convert</param>
         public static implicit operator Optional<TValue>(Optional value)
         {
             return Empty;
@@ -379,7 +405,7 @@ namespace Aornis
             var hashCode = HASH_PRIME;
             if (HasValue)
             {
-                hashCode = hashCode * HASH_PRIME + EqualityComparer<TValue>.Default.GetHashCode(value);
+                hashCode = hashCode * HASH_PRIME + EqualityComparer<TValue>.Default.GetHashCode(_value);
             }
             hashCode = hashCode * HASH_PRIME + HasValue.GetHashCode();
 
@@ -401,7 +427,7 @@ namespace Aornis
         public bool Equals(Optional<TValue> other)
         {
             return this.HasValue == other.HasValue &&
-                   EqualityComparer<TValue>.Default.Equals(value, other.value);
+                   EqualityComparer<TValue>.Default.Equals(_value, other._value);
         }
 
         /// <summary>

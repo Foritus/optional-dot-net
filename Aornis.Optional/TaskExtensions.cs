@@ -52,6 +52,43 @@ namespace Aornis
         /// <param name="task">The task to await</param>
         /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
         /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
+        public static Task<Optional<TNewValue>> FlatMapAsync<TResult, TNewValue>(
+            this Task<Optional<TResult>> task,
+            Func<TResult, Optional<TNewValue>> callback
+        )
+        {
+            return task.ContinueWith(x => x.Result.FlatMap(callback));
+        }
+        
+        /// <summary>
+        /// Awaits the given source Task and maps the resulting value using the given function
+        /// </summary>
+        /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
+        /// <typeparam name="TNewValue">The type that the result of the task will be mapped to</typeparam>
+        /// <param name="task">The task to await</param>
+        /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
+        /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
+        public static Task<Optional<TNewValue>> FlatMapAsync<TResult, TNewValue>(
+            this Task<Optional<TResult>> task,
+            Func<TResult, Task<Optional<TNewValue>>> callback
+        )
+        {
+            return task.ContinueWith(x =>
+            {
+                return x.Result.FlatMapAsync(async value => await callback(value));
+            })
+            // Unwrap the Task<Task<Optional<T>>> into a Task<Optional<T>>
+            .Unwrap();
+        }
+
+        /// <summary>
+        /// Awaits the given source Task and maps the resulting value using the given function
+        /// </summary>
+        /// <typeparam name="TResult">The type of value that is being processed by the source task</typeparam>
+        /// <typeparam name="TNewValue">The type that the result of the task will be mapped to</typeparam>
+        /// <param name="task">The task to await</param>
+        /// <param name="callback">The function to call if the given task's returned value is Optional.Empty</param>
+        /// <returns>The value returned by the task, or the value returned by callback if it the task returned Optional.Empty</returns>
         public static Task<Optional<TNewValue>> MapAsync<TResult, TNewValue>(this Task<Optional<TResult>> task, Func<TResult, TNewValue> callback)
         {
             return task.ContinueWith(x => x.Result.Map(callback));
