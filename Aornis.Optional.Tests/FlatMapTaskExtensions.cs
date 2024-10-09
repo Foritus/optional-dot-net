@@ -15,6 +15,23 @@ namespace Aornis.Tests
             baseValue = Optional.Of(123);
             newValue = Optional.Of(456);
         }
+
+        [Fact]
+        public async Task ChainTasks()
+        {
+            int result = 0;
+            await Task.Run(async () =>
+            {
+                await Task.Delay(TimeSpan.FromMilliseconds(500));
+                return Optional.Of(123);
+            }).MapAsync(async x =>
+            {
+                await Task.Delay(500);
+                result = x * 2;
+            });
+
+            result.Should().Be(246);
+        }
         
         #region Sync
 

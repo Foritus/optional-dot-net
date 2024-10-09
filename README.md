@@ -8,6 +8,7 @@ https://www.nuget.org/packages/Optional.net/
 # New in 3.0
 
 * Added .FlatMapAsync() extensions to Task<T>
+* Added .IfPresentAsync() extensions to Task<T>
 * Added OrElseThrow() to rethrow an exception if the given `Optional` does not have a value. The original exception call stack is preserved.
 
 ```
