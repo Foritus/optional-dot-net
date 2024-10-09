@@ -46,13 +46,5 @@ namespace Aornis.Tests
 
             func.Should().Throw<InvalidOperationException>();
         }
-
-        [Fact]
-        public void ValueThrowsWhenConstructedFromADefaultValueType()
-        {
-            Action func = () => Optional.Of(new StructWithFields()).Value.ToString();
-
-            func.Should().Throw<InvalidOperationException>();
-        }
     }
 }

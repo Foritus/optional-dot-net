@@ -41,6 +41,11 @@ namespace Aornis
 
         internal static bool IsDefault<TValue>(TValue value)
         {
+            if (value is ValueType)
+            {
+                return false;
+            }
+
             return EqualityComparer<TValue>.Default.Equals(value, default(TValue));
         }
 
