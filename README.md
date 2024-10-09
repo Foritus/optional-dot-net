@@ -25,6 +25,19 @@ catch (Exception ex)
 {
     SomeFallbackThingThatReturnsOptional().OrElseThrow(ex); // Original call stack of ex is preserved
 }
+
+
+// Perform some async computation that might return a result,
+// map the result or fall back to another value!
+string result =
+    await Func()
+        .MapAsync(async x => x + " even more string")
+        .OrElseAsync(() => "Fallback from async optional method chain");
+
+async Task<Optional<string>> Func()
+{
+    return Optional.Empty;
+}
 ```
 
 # New in 2.2
