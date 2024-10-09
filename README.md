@@ -77,7 +77,7 @@ Async friendly
 async Task Main()
 {
     await SomeFunc().IfPresentAsync(value =>
-	{
+    {
         await DoAsyncWork(value);
         Console.WriteLine("Async!");
     });
@@ -124,25 +124,26 @@ Wrap values into collections and then filter those collections to just the prese
 ```
 void Main()
 {
-	IEnumerable<Optional<string>> results = Optional.Pack(SomeLibraryFunctionThatReturnsAString(),
-														  AnotherFunctionThatMightReturnNull(),
-														  AnotherFunction());
+    IEnumerable<Optional<string>> results = Optional.Pack(SomeLibraryFunctionThatReturnsAString(),
+                                                          AnotherFunctionThatMightReturnNull(),
+							  AnotherFunction());
 
-	// Pick all of the non-empty values from the list, discarding the empty ones
-	Optional.UnpackPartial(results).IfPresent(listOfOnlyPresentValues => 
-	{
-		Console.WriteLine("At least one value was present");
-		foreach(var val in listOfOnlyPresentValues) {
-			Console.WriteLine(val);
-		}
-	})
-	.IfNotPresent(() => Console.WriteLine("All values were empty!"))
+    // Pick all of the non-empty values from the list, discarding the empty ones
+    Optional.UnpackPartial(results).IfPresent(listOfOnlyPresentValues => 
+    {
+        Console.WriteLine("At least one value was present");
+        foreach(var val in listOfOnlyPresentValues) {
+            Console.WriteLine(val);
+        }
+    })
+    .IfNotPresent(() => Console.WriteLine("All values were empty!"))
 
-	// Create an IEnumerable<T> if ALL values in "results" are present, otherwise return empty
-	Optional.UnpackAll(results).IfPresent(listOfAllValues => {
-		foreach(var val in listOfAllValues) {
-			Console.WriteLine(val);
-		}
-	});
+    // Create an IEnumerable<T> if ALL values in "results" are present, otherwise return empty
+    Optional.UnpackAll(results).IfPresent(listOfAllValues =>
+    {
+        foreach(var val in listOfAllValues) {
+	    Console.WriteLine(val);
+        }
+    });
 }
 ```
