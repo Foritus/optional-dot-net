@@ -115,6 +115,16 @@ namespace Aornis
             return Optional.Of(await mapper(value));
         }
 
+        public Optional<TValue> OrElse(TValue fallback)
+        {
+            if (HasValue)
+            {
+                return this;
+            }
+
+            return Optional.Of(fallback);
+        }
+
         public Optional<TValue> OrElse(Func<TValue> func)
         {
             if (HasValue)
@@ -187,6 +197,11 @@ namespace Aornis
 
         public static bool operator ==(Optional lhs, Optional<TValue> rhs) => !rhs.HasValue;
         public static bool operator !=(Optional lhs, Optional<TValue> rhs) => !(lhs == rhs);
+
+        public static implicit operator Optional<TValue>(TValue value)
+        {
+            return Optional.Of(value);
+        }
 
         /// <summary>
         /// Implicit operator to convert Optional.Empty into Optional(TValue).Empty
