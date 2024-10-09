@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Richard Thorne</Authors>
+    <Company>Aornis</Company>
+    <Description>A productive Optional library for .NET</Description>
+    <Copyright>Richard Thorne</Copyright>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Malediction/optional-dot-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Malediction/optional-dot-net.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags />
+    <PackageId>Optional.net</PackageId>
+    <Product>Optional.net</Product>
   </PropertyGroup>
 
 </Project>

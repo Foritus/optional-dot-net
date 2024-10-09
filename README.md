@@ -1,6 +1,10 @@
 # Optional.net
 A simple .net Optional type designed for productivity.
 
+# Nuget package
+
+https://www.nuget.org/packages/Optional.net/1.0.0
+
 ## Examples
 
 Optional behaviour when returning values
