@@ -5,20 +5,23 @@
     <Authors>Richard Thorne</Authors>
     <Company>Aornis</Company>
     <Description>A productive Optional library for .NET</Description>
+    <Summary>A productive Optional library for C# with F# interop</Summary>
     <Copyright>Richard Thorne</Copyright>
-    <PackageLicense>https://www.apache.org/licenses/LICENSE-2.0</PackageLicense>
-    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <License>Apache-2.0</License>
     <PackageProjectUrl>https://github.com/Foritus/optional-dot-net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Foritus/optional-dot-net.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags />
     <PackageId>Optional.net</PackageId>
     <Product>Optional.net</Product>
     <Version>1.2</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <LangVersion>latest</LangVersion>
-    <PackageVersion>2.0</PackageVersion>
+    <PackageVersion>2.1</PackageVersion>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.5.0" />
+  </ItemGroup>
 
 </Project>

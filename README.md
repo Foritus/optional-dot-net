@@ -5,6 +5,37 @@ A simple .net Optional type designed for productivity.
 
 https://www.nuget.org/packages/Optional.net/
 
+## New in 2.1! .NET Core 3.0 build, readonly struct optimisations and F# interop
+
+I've added support for .NET Core 3.0 and I've made `Optional<T>` a `readonly struct` (It was never mutable anyway), which should give some small perf wins through reduced copies on member invocations.
+
+F#'s option type is fantastic _until_ anything in C# needs to deal with it. So I've added some implicit conversions from FSharpOption<T> and FSharpValueOption<T> into their equivalent Optional.net types.
+Additionally I've added a .ToFsOption() method to Optional.net optionals to make them easy for F# to consume in a performant manner.
+
+```
+module MyFSharpModule =
+    let DoSomething () = 42 option // Return an F# option like normal
+
+...
+
+void Main()
+{
+    Optional<int> result = MyFsharpModule.DoSomething(); // Implicitly converts F# option into C#-friendly Optional.net option	
+}
+```
+
+```
+class MyCSharpClass
+{
+    public static Optional<string> DoSomething() => Optional.Of(42) // Return an Optional.net option
+}
+
+let myFun () =
+    match MyCSharpClass.DoSomething().ToFsOption() with
+	| Some value -> printfn "Easily consume Optional.net from F#! %O" value
+	| None -> printfn "Life is better when we all get along"
+```
+
 ## Examples
 
 Optional behaviour when returning values

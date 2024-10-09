@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
+using Microsoft.FSharp.Core;
 
 namespace Aornis
 {
@@ -308,6 +309,43 @@ namespace Aornis
         public static implicit operator Optional<TValue>(Optional value)
         {
             return Empty;
+        }
+
+        /// <summary>
+        /// Provides a handy implicit conversion from F#'s option type to our C#-friendly Option type (F#'s option type is really obnoxious without
+        /// all of the syntactic sugar that F# provides)
+        /// </summary>
+        /// <param name="fsOption">The F# option to convert</param>
+        /// <returns>An Optional.net equivalent of the F# option</returns>
+        public static implicit operator Optional<TValue>(FSharpOption<TValue> fsOption)
+        {
+            if (fsOption == null || fsOption.Equals(FSharpOption<TValue>.None))
+            {
+                return Empty;
+            }
+            
+            return Optional.Of(fsOption.Value);
+        }
+
+        /// <summary>
+        /// Provides a handy implicit conversion from F#'s option type to our C#-friendly Option type. The F# ValueOption is less poorly designed than FSharpOption
+        /// but a conversion is provided here for completeness.
+        /// </summary>
+        /// <param name="fsOption">The F# option to convert</param>
+        /// <returns>An Optional.net equivalent of the F# option</returns>
+        public static implicit operator Optional<TValue>(FSharpValueOption<TValue> fsOption)
+        {
+            return fsOption.IsValueNone ? Empty : Optional.Of(fsOption.Value);
+        }
+
+        /// <summary>
+        /// Provides a simple explicit way to map back from an Optional.net option to an F#-friendly option. Given F# does not allow implicit conversions,
+        /// this is the neatest way to achieve this.
+        /// </summary>
+        /// <returns>An F# option that is equivalent to this optional instance</returns>
+        public FSharpValueOption<TValue> ToFsOption()
+        {
+            return HasValue ? FSharpValueOption<TValue>.NewValueSome(Value) : FSharpValueOption<TValue>.ValueNone;
         }
 
         public override string ToString()
