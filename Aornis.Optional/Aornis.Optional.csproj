@@ -7,6 +7,7 @@
     <Description>A productive Optional library for .NET</Description>
     <Copyright>Richard Thorne</Copyright>
     <PackageLicense>https://www.apache.org/licenses/LICENSE-2.0</PackageLicense>
+    <PackageLicenseUrl>https://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/Foritus/optional-dot-net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Foritus/optional-dot-net.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
