@@ -16,7 +16,7 @@
     <Version>1.2</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <LangVersion>latest</LangVersion>
-    <PackageVersion>2.1</PackageVersion>
+    <PackageVersion>2.1.1</PackageVersion>
     <TargetFrameworks>netstandard2.0;netcoreapp3.0;netcoreapp3.1</TargetFrameworks>
   </PropertyGroup>
 

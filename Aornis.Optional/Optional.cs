@@ -29,7 +29,7 @@ namespace Aornis
             {
                 if (!HasValue)
                 {
-                    throw new InvalidOperationException($"Unsafe call to {nameof(Value)}() when {HasValue} is false");
+                    throw new InvalidOperationException($"Unsafe call to {nameof(Value)}() when {nameof(HasValue)} is false");
                 }
 
                 return value;
