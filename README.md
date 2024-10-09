@@ -3,7 +3,7 @@ A simple .net Optional type designed for productivity.
 
 # Nuget package
 
-https://www.nuget.org/packages/Optional.net/1.0.0
+https://www.nuget.org/packages/Optional.net/
 
 ## Examples
 
