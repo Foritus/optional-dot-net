@@ -16,13 +16,13 @@ namespace Aornis.Tests
         [Fact]
         public void FromDefaultValueType()
         {
-            Optional.Of(default(int)).Should().Be(Optional<int>.Empty);
+            Optional.Of(default(int)).Should().NotBe(Optional<int>.Empty);
         }
 
         [Fact]
         public void FromDefaultValueTypeWithFields()
         {
-            Optional.Of(default(StructWithFields)).Should().Be(Optional<StructWithFields>.Empty);
+            Optional.Of(default(StructWithFields)).Should().NotBe(Optional<StructWithFields>.Empty);
         }
     }
 }

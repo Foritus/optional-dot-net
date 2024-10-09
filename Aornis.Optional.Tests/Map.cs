@@ -15,6 +15,7 @@ namespace Aornis.Tests
         }
 
         #region Sync
+        
         [Fact]
         public void MapFuncIsCalledWhenHasValue()
         {
@@ -27,6 +28,20 @@ namespace Aornis.Tests
             });
 
             wasCalled.Should().BeTrue();
+        }
+        
+        [Fact]
+        public void MapFuncIsNotCalledWhenEmpty()
+        {
+            bool wasCalled = false;
+
+            Optional<string>.Empty.Map(x =>
+            {
+                wasCalled = true;
+                return x;
+            });
+
+            wasCalled.Should().BeFalse();
         }
 
         [Fact]
@@ -64,6 +79,20 @@ namespace Aornis.Tests
             });
 
             wasCalled.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task MapAsyncFuncIsNotCalledWhenEmpty()
+        {
+            bool wasCalled = false;
+
+            await Optional<string>.Empty.MapAsync(x =>
+            {
+                wasCalled = true;
+                return Task.FromResult(x);
+            });
+
+            wasCalled.Should().BeFalse();
         }
 
         [Fact]

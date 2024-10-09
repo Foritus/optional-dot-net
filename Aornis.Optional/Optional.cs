@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 
 namespace Aornis
 {
-    public struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>>
+    public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>>
     {
         /// <summary>
         /// Represents the 'empty' value for an Optional(TValue) instance
         /// </summary>
-        public static readonly Optional<TValue> Empty = new Optional<TValue>(default(TValue));
-
-        public void ToList()
-        {
-            throw new NotImplementedException();
-        }
+        public static readonly Optional<TValue> Empty = new Optional<TValue>(default(TValue), false);
 
         private readonly TValue value;
 
@@ -48,6 +44,16 @@ namespace Aornis
         {
             this.value = value;
             HasValue = !Optional.IsDefault(ref value);
+        }
+        
+        /// <summary>
+        /// Internal workaround for the fact that value types don't play nicely with IsDefault. i.e. if I create an Optional(int) with value 0, this is technically the same as
+        /// Optional(int).Empty as default(int) is 0. Doh. So instead allow some manual wiring when creating Optional(int).Empty so explicitly state "hey this is empty"
+        /// </summary>
+        internal Optional(TValue value, bool hasValue)
+        {
+            this.value = value;
+            HasValue = hasValue;
         }
 
         /// <summary>
@@ -243,6 +249,47 @@ namespace Aornis
             }
 
             return await func();
+        }
+
+        /// <summary>
+        /// Throws the given exception if the current optional is empty, otherwise returns the current optional for further processing
+        /// </summary>
+        /// <param name="ex">The exception to throw if the current value is empty</param>
+        public Optional<TValue> ThrowIfEmpty(Exception ex)
+        {
+            return ThrowIfEmpty(() => ex);
+        }
+
+        /// <summary>
+        /// Calls the given function and throws the exception it returns if the current optional is empty, otherwise returns the current
+        /// optional for further processing
+        /// </summary>
+        /// <param name="makeException">Function to only call if the current optional is empty</param>
+        /// <returns>The current optional value</returns>
+        public Optional<TValue> ThrowIfEmpty(Func<Exception> makeException)
+        {
+            if (HasValue)
+            {
+                return this;
+            }
+
+            Exception ex = makeException();
+            ExceptionDispatchInfo.Capture(ex).Throw();
+            // Boilerplate required to make the compiler happy
+            return this;
+        }
+
+        public async Task<Optional<TValue>> ThrowIfEmptyAsync(Func<Task<Exception>> makeException)
+        {
+            if (HasValue)
+            {
+                return this;
+            }
+
+            Exception ex = await makeException();
+            ExceptionDispatchInfo.Capture(ex).Throw();
+            // Boilerplate required to make the compiler happy
+            return this;
         }
 
         /// <summary>
