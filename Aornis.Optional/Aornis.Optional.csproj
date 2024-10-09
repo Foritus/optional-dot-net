@@ -26,6 +26,10 @@
     <DebugSymbols>true</DebugSymbols>
     <DocumentationFile>bin\Release\Aornis.Optional.xml</DocumentationFile>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="4.5.0" />
