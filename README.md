@@ -9,9 +9,9 @@ https://www.nuget.org/packages/Optional.net/
 * Added extension methods on Task<Optional<T>> to make chaining optional async methods nicer
 
 ```
-string result = await SomeAsyncFunc().OrElse(() => "hello!");
+string result = await SomeAsyncFunc().OrElseAsync(() => "hello!");
 
-Optional<T> result = await SomeAsyncFunc().OrElse(SomeOtherFunThatReturnsOptional);
+Optional<T> result = await SomeAsyncFunc().OrElseAsync(SomeOtherFunThatReturnsOptional);
 
 Optional<string> result = await Task.FromResult("Hello").MapAsync(x => x + " World!");
 
