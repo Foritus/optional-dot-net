@@ -24,6 +24,25 @@ void Main() {
 }
 ```
 
+Implicitly converts values into Optionals
+```
+	string SomeFunc() {
+		return "test";
+	}
+
+    Optional<string> result = SomeFunc();
+```
+
+Automatically converts nulls to Optional.Empty
+```
+	string SomeFunc() {
+		return null;
+	}
+
+    Optional<string> foo = SomeFunc();
+	Console.WriteLine($"Result HasValue = {foo.HasValue}");
+```
+
 Chain through multiple optional functions until one returns
 ```
 void Main() {
