@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using Microsoft.FSharp.Core;
@@ -22,13 +23,18 @@ public readonly struct Optional<TValue> : IOptional, IEquatable<Optional<TValue>
     /// <summary>
     /// Returns true if this Optional contains a value, otherwise false
     /// </summary>
-    public bool HasValue { get; }
+    public bool HasValue
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        get;
+    }
 
     /// <summary>
     /// Returns the value held inside this Optional, or throws InvalidOperationException if this Optional does not contain a value
     /// </summary>
     public TValue Value
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
             if (!HasValue)

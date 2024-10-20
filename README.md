@@ -2,10 +2,44 @@
 A simple .net Optional type designed for productivity.
 
 # Nuget package
-
 https://www.nuget.org/packages/Optional.net/
 
-# New 3.5
+# New in 4.0
+* Added extension methods to IEnumerable<Optional<T>> to allow you to take the first N elements that are not empty
+```c#
+// Lazily tries 3 different functions and tries to return the first non-empty result, in this case
+// it will return an IEnumerator containing "hello" and never call SomeReallyExpensiveFunction
+return [
+    () => Optional<string>.Empty,
+    () => Optional.Of("hello"),
+    () => SomeReallyExpensiveFunction()
+].TakePresent(1);
+
+// Evaluates optional values in a collection and returns the first 2 non-empty results, in this case
+// it will return an Optional containing "hello" and "world"
+return [
+    Optional.Of("hello"),
+    Optional<string>.Empty,
+    Optional.Of("world")
+].TakePresent(2);
+
+# New in 3.6
+* Added Optional.Coalesce() and Optional.First() methods for handling collections of optional values and collections-of-functions that return optional values
+```c#
+// Lazily tries 3 different functions and returns the first non-empty result, in this case
+// it will return an Optional containing "hello" and will never call SomeReallyExpensiveFunction()
+return Optional.Coalesce([
+        () => Optional.Of("hello"),
+        () => Optional<string>.Empty,
+        () => SomeReallyExpensiveFunction()
+]);
+
+// Evaluates optional values in a collection and returns the first non-empty result, in this case
+// it will return an Optional containing "hello" and will never call SomeReallyExpensiveFunction()
+return Optional.First([ Optional<string>.Empty, Optional.Of("hello"), Optional.Of("word") ]);
+```
+
+# New in 3.5
 * .net 8 build added!
 * Added IfNotPresentAsync Task extension method
 * Greater test coverage
