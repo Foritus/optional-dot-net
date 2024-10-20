@@ -253,6 +253,52 @@ public class Optional
         return result;
     }
 
+    /// <summary>
+    /// Given a collection of functions which produce optional values, will call each function in sequence until one returns a non-empty value.
+    /// The found value is returned. If no non-empty value is found, empty is returned.
+    /// </summary>
+    /// <param name="generators">The collection of functions to execute and check for a non-empty return value</param>
+    /// <typeparam name="T">The type of value found within the optional sequence</typeparam>
+    /// <returns>The first non-empty value returned from the functions in the given collection of values, otherwise empty</returns>
+    public static Optional<T> Coalesce<T>(IEnumerable<Func<Optional<T>>> generators)
+    {
+        foreach (var func in generators)
+        {
+            var value = func();
+            if (!value.HasValue)
+            {
+                continue;
+            }
+
+            return value;
+        }
+
+        return Empty;
+    }
+
+    /// <summary>
+    /// Given a collection of optional values, will execute the given callback for the FIRST non-empty value found within that set of values. The found value is returned. If no non-empty value is found, empty is returned.
+    /// </summary>
+    /// <param name="values">The collection of values to search for a non-empty value</param>
+    /// <param name="callback">The callback that will be executed once if a non-empty value is found</param>
+    /// <typeparam name="T">The type of value found within the optional sequence</typeparam>
+    /// <returns>The first non-empty value found in the given collection of values, otherwise empty</returns>
+    public static Optional<T> ForAny<T>(IEnumerable<Optional<T>> values, Action<T> callback)
+    {
+        foreach (var value in values)
+        {
+            if (!value.HasValue)
+            {
+                continue;
+            }
+
+            callback(value.Value);
+            return value;
+        }
+
+        return Empty;
+    }
+
     /// <inheritdoc cref="Object.ToString"/>
     public override string ToString()
     {
